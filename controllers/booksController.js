@@ -1,4 +1,3 @@
-import axios from "axios";
 const db = require("../models");
 
 // Defining methods for the booksController
