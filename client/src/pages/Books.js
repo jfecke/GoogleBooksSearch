@@ -53,6 +53,12 @@ class Books extends Component {
     }
   };
 
+  findBooks = (query) => {
+    axios.get("https://www.googleapis.com/books/v1/volumes?q="+query+"&key="+ process.env.APIKEY).then(function(results){
+      console.log(results.data)
+    });
+  };
+
   render() {
     return (
       <Container fluid>
