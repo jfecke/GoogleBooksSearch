@@ -16,21 +16,21 @@ class Books extends Component {
     query: "",
     title: "",
     author: "",
-    synopsis: "",
+    description: "",
     booksSearched: []
   };
 
-  // componentDidMount() {
-  //   this.loadBooks();
-  // }
+  componentDidMount() {
+    this.loadBooks();
+  }
 
-  // loadBooks = () => {
-  //   API.getBooks()
-  //     .then(res =>
-  //       this.setState({ books: res.data, title: "", author: "", synopsis: "" })
-  //     )
-  //     .catch(err => console.log(err));
-  // };
+  loadBooks = () => {
+    API.getBooks()
+      .then(res =>
+        this.setState({ books: res.data})
+      )
+      .catch(err => console.log(err));
+  };
 
   deleteBook = id => {
     API.deleteBook(id)
@@ -49,9 +49,12 @@ class Books extends Component {
     event.preventDefault();
     if (this.state.title && this.state.author) {
       API.saveBook({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
+        bookid: event.target.parentNode.querySelector("img").id,
+        title: event.target.parentNode.querySelector('.title').textContent,
+        author: event.target.parentNode.querySelector('.author').textContent,
+        description: event.target.parentNode.querySelector('.descript').textContent,
+        link: event.target.parentNode.querySelector('.link').href,
+        image: event.target.parentNode.querySelector('img').src
       })
         .then(res => this.loadBooks())
         .catch(err => console.log(err));
@@ -127,11 +130,12 @@ class Books extends Component {
           <Book
             id={book.id}
             image={book.image}
-            // title={book.volumeInfo.title}
-            // author={book.volumeInfo.authors[0]}
-            // description={book.volumeInfo.description}
-            // link={book.volumeInfo.previewLink}
+            title={book.title}
+            author={book.author}
+            description={book.description}
+            link={book.link}
             key={book.id}  
+            saveBook={this.handleSave}
           />
         ))}
           </Col>
@@ -142,14 +146,16 @@ class Books extends Component {
             {this.state.books.length ? (
               <List>
                 {this.state.books.map(book => (
-                  <ListItem key={book._id}>
-                    <Link to={"/books/" + book._id}>
-                      <strong>
-                        {book.title} by {book.author}
-                      </strong>
-                    </Link>
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                  </ListItem>
+                  <Book
+                  id={book.id}
+                  image={book.image}
+                  title={book.title}
+                  author={book.author}
+                  description={book.description}
+                  link={book.link}
+                  key={book.id}  
+                  saveBook={this.handleSave}
+                />
                 ))}
               </List>
             ) : (
