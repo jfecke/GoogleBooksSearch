@@ -7,6 +7,7 @@ import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
 import { Input, FormBtn } from "../components/Form";
 import Book from "../components/Book";
+import Book2 from "../components/Book2";
 require('dotenv').config();
 
 class Books extends Component {
@@ -32,8 +33,10 @@ class Books extends Component {
       .catch(err => console.log(err));
   };
 
-  deleteBook = id => {
-    API.deleteBook(id)
+  deleteBook = event => {
+    event.preventDefault();
+    let bookid = event.target.getAttribute("dataid");
+    API.deleteBook(bookid)
       .then(res => this.loadBooks())
       .catch(err => console.log(err));
   };
@@ -57,7 +60,6 @@ class Books extends Component {
         image: event.target.parentNode.querySelector('img').src
       })
         .then(res => {
-          console.log("Books: ",this.state.books)
           this.loadBooks()})
         .catch(err => console.log(err));
     }
@@ -133,20 +135,20 @@ class Books extends Component {
           </Col>
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>Books On My List</h1>
+              <h1>Saved Books</h1>
             </Jumbotron>
             {this.state.books.length ? (
               <List>
                 {this.state.books.map(book => (
-                  <Book
-                  id={book.id}
+                  <Book2
+                  id={book._id}
                   image={book.image}
                   title={book.title}
                   author={book.author}
                   description={book.description}
                   link={book.link}
-                  key={book.id}  
-                  saveBook={this.handleSave}
+                  key={book._id}
+                  deleteBook={this.deleteBook}
                 />
                 ))}
               </List>

@@ -1,0 +1,39 @@
+.card {
+  background: #fff;
+  border-radius: 2px;
+  min-height: 300px;
+  width: 95%;
+  margin: 10px auto;
+  position: relative;
+  box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+  border: 1px solid black;
+}
+
+.card > img {
+  max-height: 300px;
+  max-width: 150px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.bookText {
+  position: absolute;
+  left: 170px;
+  top: 20px;
+
+}
+
+.description {
+  max-height: 150px;
+  overflow: auto;
+}
+
+.savebook {
+  height: 40px;
+  width: 100px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  
+}
