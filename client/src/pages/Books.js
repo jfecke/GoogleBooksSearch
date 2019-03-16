@@ -4,7 +4,7 @@ import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
-import { List, ListItem } from "../components/List";
+import { List } from "../components/List";
 import { Input, FormBtn } from "../components/Form";
 import Book from "../components/Book";
 require('dotenv').config();
@@ -47,7 +47,7 @@ class Books extends Component {
 
   handleSave = event => {
     event.preventDefault();
-    if (this.state.title && this.state.author) {
+    if (event.target.parentNode.querySelector('.title').textContent) {
       API.saveBook({
         bookid: event.target.parentNode.querySelector("img").id,
         title: event.target.parentNode.querySelector('.title').textContent,
@@ -56,25 +56,16 @@ class Books extends Component {
         link: event.target.parentNode.querySelector('.link').href,
         image: event.target.parentNode.querySelector('img').src
       })
-        .then(res => this.loadBooks())
+        .then(res => {
+          console.log("Books: ",this.state.books)
+          this.loadBooks()})
         .catch(err => console.log(err));
     }
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    // if (this.state.query) {
-    //   let split = this.state.query.split(" ");
-    //   let query = split[0];
-    //   for (let i in split) {
-    //     if (i !== "0") {
-    //       query += "+" + split[i];
-    //     }
-    //   }
-    //   console.log(query);
-
     API.findBooks(this.state.query).then(results => {
-      console.log(results.data.items);
       let filteredBooks = results.data.items.map(book =>{
         let id = book.id;
         let title=book.volumeInfo.title;
@@ -135,8 +126,9 @@ class Books extends Component {
             description={book.description}
             link={book.link}
             key={book.id}  
-            saveBook={this.handleSave}
-          />
+            saveBook={this.handleSave}>
+            <DeleteBtn />
+          </Book>
         ))}
           </Col>
           <Col size="md-6 sm-12">
